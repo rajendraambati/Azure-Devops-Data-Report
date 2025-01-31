@@ -136,6 +136,6 @@ if uploaded_folder is not None:
         st.download_button(
             label="Download Processed File",
             data=output_buffer,
-            file_name=f"processed_{folder_name}_details.xlsx",
+            file_name=f"{folder_name}_Report.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
