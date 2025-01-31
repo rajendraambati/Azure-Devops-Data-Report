@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from openpyxl import load_workbook
-from openpyxl.styles import PatternFill
+from openpyxl.styles import PatternFill, Alignment, Font
 import re
 import streamlit as st
 from io import BytesIO
@@ -120,9 +120,18 @@ if uploaded_folder is not None:
         output_buffer.seek(0)
         wb = load_workbook(output_buffer)
         ws = wb.active
-        green_fill = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")
+
+        # Insert a new row at the top for the heading
+        ws.insert_rows(1)
+        ws.merge_cells(start_row=1, start_column=1, end_row=1, end_column=len(unique_data.columns))
+        heading_cell = ws.cell(row=1, column=1, value=f"Azure Devops Valuation Report - {folder_name}")
+
+        # Apply styling to the heading
+        heading_cell.font = Font(size=20, bold=True)
+        heading_cell.alignment = Alignment(horizontal='center', vertical='center')
 
         # Apply green highlight to the 'Resource Name' column
+        green_fill = PatternFill(start_color="00FF00", end_color="00FF00", fill_type="solid")
         for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=2, max_col=2):
             for cell in row:
                 cell.fill = green_fill
